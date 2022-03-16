@@ -24,6 +24,8 @@ public class OperaSalesApplication {
 //        System.out.println(list);
 
 
+        ctx.getBean(EventService.class).editEvent(new EventEntity(1L, "Первое мероприятие 2"));
+
         EventEntity e = ctx.getBean(EventService.class).getEventById(1L);
         System.out.println(e);
 
