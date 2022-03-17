@@ -14,21 +14,7 @@ import java.util.List;
 public class OperaSalesApplication {
 
     public static void main(String[] args) {
-        final ConfigurableApplicationContext ctx = SpringApplication.run(OperaSalesApplication.class, args);
-
-
-       // ctx.getBean(TicketService.class).byTicket(new TicketEntity(null, 100, 1, null));
-        //ctx.getBean(TicketService.class).returnTicket(2L);
-
-//        List<EventEntity> list = ctx.getBean(EventService.class).getList();
-//        System.out.println(list);
-
-
-        ctx.getBean(EventService.class).editEvent(new EventEntity(1L, "Первое мероприятие 2"));
-
-        EventEntity e = ctx.getBean(EventService.class).getEventById(1L);
-        System.out.println(e);
-
+        SpringApplication.run(OperaSalesApplication.class, args);
     }
 
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Ticket {
-    private int id;
+    private Long id;
     private int price;
     private String eventName;
 }

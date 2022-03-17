@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
+import ru.learnup.vtb.operasales.model.Event;
 import ru.learnup.vtb.operasales.repository.entities.EventEntity;
 import ru.learnup.vtb.operasales.repository.interfaces.EventRepository;
 import ru.learnup.vtb.operasales.services.interfaces.Logger;
@@ -26,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -59,10 +61,10 @@ public class EventService implements ApplicationContextAware {
     }
 
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
-    public EventEntity getEventById(Long id)
+    public Event getEventById(Long id)
     {
         try {
-            return repository.getById(id);
+            return toDomain(repository.getById(id));
         }catch (Exception err){
             System.err.println(err.getMessage());
         }
@@ -91,10 +93,19 @@ public class EventService implements ApplicationContextAware {
         repository.deleteById(id);
     }
 
-    public List<EventEntity> getList() {
-
-        return repository.findAll();
+    public List<Event> getList() {
+        return toDomain(repository.findAllOrderedById());
     }
+
+    private List<Event> toDomain(List<EventEntity> entities){
+        return entities.stream()
+                .map(EventService::toDomain).collect(Collectors.toList());
+    }
+
+    private static Event toDomain(EventEntity entity){
+        return new Event(entity.getId(), entity.getName());
+    }
+
 
     @PostConstruct
     public void init() {
