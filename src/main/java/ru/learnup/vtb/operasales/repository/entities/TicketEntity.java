@@ -16,7 +16,8 @@ import javax.persistence.*;
 public class TicketEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "tickets_seq", sequenceName = "tickets_seq")
     private Long id;
 
     @Column(name = "price")

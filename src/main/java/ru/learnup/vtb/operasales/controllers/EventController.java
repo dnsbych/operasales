@@ -1,49 +1,68 @@
 package ru.learnup.vtb.operasales.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import ru.learnup.vtb.operasales.controllers.dto.EventDto;
+import ru.learnup.vtb.operasales.mappers.Mapper;
 import ru.learnup.vtb.operasales.model.Event;
 import ru.learnup.vtb.operasales.model.Ticket;
 import ru.learnup.vtb.operasales.services.EventService;
 import ru.learnup.vtb.operasales.services.TicketService;
 
+import java.util.Collection;
 import java.util.List;
 
-@Controller
-@RequestMapping(value = "/events", method = RequestMethod.GET)
+import static java.util.stream.Collectors.toList;
+
+@RestController
+@RequestMapping("/events")
 public class EventController {
 
     private EventService eventService;
     private TicketService ticketService;
+    private Mapper mapper;
 
     @Autowired
-    public EventController(EventService eventService, TicketService ticketService) {
+    public EventController(EventService eventService, TicketService ticketService, Mapper mapper) {
 
         this.eventService = eventService;
         this.ticketService = ticketService;
+        this.mapper = mapper;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String showEvents(Model model){
+    @GetMapping
+    public Collection<EventDto> getEvents(){
         final List<Event> events = eventService.getList();
-        model.addAttribute("events", events);
-        return "events";
+        return events.stream()
+                .map(mapper::toDto)
+                .collect(toList());
     }
 
     @GetMapping("/{id}")
-    public String viewevent(@PathVariable("id") long id, Model model){
+    public EventDto get(@PathVariable("id") long id){
         final Event event = eventService.getEventById(id);
-        model.addAttribute("event", event);
-
         final List<Ticket> tickets = ticketService.getETikets(event.getId());
-        model.addAttribute("tickets", tickets);
+        event.setTickets(tickets);
 
-        return "viewevent";
+        return mapper.toDto(event);
     }
+
+    @PostMapping
+    public Long create(@RequestBody EventDto eventDto){
+        Event event = mapper.toDomain(eventDto);
+        return eventService.addEvent(mapper.toEntity(event));
+    }
+
+    @PutMapping("/{id}")
+    public void update(@PathVariable("id") Long id, @RequestBody EventDto eventDto){
+        Event event = mapper.toDomain(eventDto);
+        eventService.editEvent(mapper.toEntity(event));
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id){
+        eventService.deleteEvent(id);
+    }
+
 
 }

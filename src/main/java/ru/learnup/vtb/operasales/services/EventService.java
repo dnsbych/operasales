@@ -46,18 +46,9 @@ public class EventService implements ApplicationContextAware {
     }
 
 
-    public void addEvent(EventEntity e) {
-
-        txTemplate.executeWithoutResult((status)->{
-            try{
-                repository.save(e);
-            }catch (Exception err){
-                System.err.println(err);
-                status.setRollbackOnly();
-            }
-        });
-
-        repository.save(e);
+    public Long addEvent(EventEntity e) {
+        EventEntity es = repository.save(e);
+        return es.getId();
     }
 
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
@@ -103,7 +94,7 @@ public class EventService implements ApplicationContextAware {
     }
 
     private static Event toDomain(EventEntity entity){
-        return new Event(entity.getId(), entity.getName());
+        return new Event(entity.getId(), entity.getName(), new ArrayList<>());
     }
 
 
