@@ -20,11 +20,6 @@ import java.util.List;
 @Proxy(lazy=false)
 public class EventEntity {
 
-    public EventEntity(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "events_seq")
     @SequenceGenerator(name = "events_seq", sequenceName = "events_seq")
@@ -42,8 +37,8 @@ public class EventEntity {
         return name;
     }
 
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
-    private Collection<TicketEntity> tickets;
+//    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+//    private Collection<TicketEntity> tickets;
 
 
     @Column(name = "name")
@@ -55,9 +50,9 @@ public class EventEntity {
 
         StringBuilder sb = new StringBuilder(String.format("%s (%d)\n", name, id));
 
-        for (TicketEntity ticket: tickets) {
-            sb.append(ticket).append("\n");
-        }
+//        for (TicketEntity ticket: tickets) {
+//            sb.append(ticket).append("\n");
+//        }
 
         return sb.toString();
     }

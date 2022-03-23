@@ -23,10 +23,13 @@ public class TicketEntity {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "event_id")
+    private Long eventId;
 
-    @JoinColumn(name = "event_id")
-    @ManyToOne
-    private EventEntity event;
+
+//    @JoinColumn(name = "event_id")
+//    @ManyToOne
+//    private EventEntity event;
 
 
     public void setId(Long id) {

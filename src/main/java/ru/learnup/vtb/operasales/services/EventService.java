@@ -1,9 +1,5 @@
 package ru.learnup.vtb.operasales.services;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -94,7 +90,7 @@ public class EventService implements ApplicationContextAware {
     }
 
     private static Event toDomain(EventEntity entity){
-        return new Event(entity.getId(), entity.getName(), new ArrayList<>());
+        return new Event(entity.getId(), entity.getName());
     }
 
 

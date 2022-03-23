@@ -27,8 +27,9 @@ public class TicketService implements ApplicationContextAware {
     ApplicationContext ctx;
     TicketRepository repository;
 
-    public void byTicket(TicketEntity t) {
-        repository.save(t);
+    public Long byTicket(TicketEntity t) {
+        TicketEntity save = repository.save(t);
+        return save.getId();
     }
 
     public void returnTicket(Long id) {
@@ -36,7 +37,7 @@ public class TicketService implements ApplicationContextAware {
     }
 
     public List<Ticket> getETikets(Long eventId){
-        return toDomain(repository.getTicketEntitiesByEvent_Id(eventId));
+        return toDomain(repository.getTicketEntitiesByEventId(eventId));
     }
 
 
@@ -46,7 +47,7 @@ public class TicketService implements ApplicationContextAware {
     }
 
     private static Ticket toDomain(TicketEntity ticket){
-        return new Ticket(ticket.getId(), ticket.getPrice(), ticket.getEvent().getName());
+        return new Ticket(ticket.getId(), ticket.getPrice(), ticket.getEventId());
     }
 
     @Override

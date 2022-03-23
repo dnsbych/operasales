@@ -10,6 +10,4 @@ import java.util.List;
 public class Event {
     private Long id;
     private String name;
-
-    List<Ticket> tickets;
 }

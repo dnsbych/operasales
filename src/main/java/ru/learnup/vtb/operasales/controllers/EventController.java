@@ -41,8 +41,6 @@ public class EventController {
     @GetMapping("/{id}")
     public EventDto get(@PathVariable("id") long id){
         final Event event = eventService.getEventById(id);
-        final List<Ticket> tickets = ticketService.getETikets(event.getId());
-        event.setTickets(tickets);
 
         return mapper.toDto(event);
     }
@@ -63,6 +61,5 @@ public class EventController {
     public void delete(@PathVariable("id") Long id){
         eventService.deleteEvent(id);
     }
-
 
 }

@@ -9,5 +9,5 @@ import lombok.Data;
 public class Ticket {
     private Long id;
     private int price;
-    private String eventName;
+    private Long eventId;
 }

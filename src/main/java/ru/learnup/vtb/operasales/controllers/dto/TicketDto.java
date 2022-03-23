@@ -19,4 +19,7 @@ public class TicketDto {
 
     @JsonProperty
     private String eventName;
+
+    @JsonProperty
+    private Long eventId;
 }
